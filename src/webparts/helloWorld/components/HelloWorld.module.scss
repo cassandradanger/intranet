@@ -1,0 +1,52 @@
+@import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
+
+.main{
+  width: 300px;
+}
+.title{
+  color: green;
+  font-size: 13pt;
+  font-weight: 600;
+  margin-bottom: -10px;
+  text-align: center;
+}
+.content{
+  padding: 10px 10px 10px 20px;
+  border: 2px solid green;
+  border-radius: 5px;
+  width: 250px;
+  height: 65px;
+  line-height: 10px;
+  overflow: auto;
+}
+ul{
+  list-style: none;
+}
+li{
+  margin-bottom: 15px;
+}
+.personWrapper{
+  display: inline-block;
+}
+.image{
+  border: 1px solid black;
+  border-radius: 50px;
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+.name{
+  font-weight: 600;
+  font-size: 12pt;
+}
+.position{
+  font-size: 9pt;
+  margin-bottom: 17px;
+  margin-top: 8px;
+}
+.reason{
+  font-size: 9pt;
+  font-style: italic;
+}
