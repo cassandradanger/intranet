@@ -18,6 +18,14 @@ export interface IBdayAnniversaryWebPartProps {
   SPListName: string;
 }
 
+export interface PeopleLists {
+  value: PeopleList[];  
+}
+
+export interface PeopleList{
+  Title: string;
+  Body: string;
+}
 
 const variableName = 'hihihihihihih';
 
@@ -31,7 +39,7 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
         description: variableName,
       }
     );
-      this.getListData();
+      this._firstGetList();
     ReactDom.render(element, this.domElement);
   }
 
@@ -43,13 +51,34 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
     return Version.parse('1.0');
   }
 
-  protected getListData() {  
+  private _firstGetList() {
+    this._getListData().then((response) => {
+      console.log('check check check', response);
+      this._renderList(response.value)
+    })
+  }
+
+  private _getListData() {  
     return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + `/_api/web/Lists/GetByTitle('Staff Events')/Items?select=ID,Title,Body&$top%205`, SPHttpClient.configurations.v1)  
-        .then((response) => {
-          console.log("this is response!!!", response.json());
-          return response.json();  
-        });  
-    } 
+      .then((response) => {
+        console.log("this is response!!!", response.json());
+        return response.json();
+      });  
+  }
+
+  private _renderList(items: PeopleList[]): void {
+    console.log('renderList'); 
+    let html: string = ``;   
+    items.forEach((item: PeopleList) => {
+      console.log('item', item);
+      html += `  
+           <h3>${item.Title}</h3>
+            <p>${item.Body}</p>
+          `;  
+    });  
+    const listContainer: Element = this.domElement.querySelector('#spListContainer');  
+    listContainer.innerHTML = html;  
+  } 
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
