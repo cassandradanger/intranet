@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
   "id": "eb2ed36d-e940-4b31-a27d-ae3b1c714c10",
-  "alias": "HelloWorldWebPart",
+  "alias": "BdayAnniversaryWebPart",
   "componentType": "WebPart",
 
   // The "*" signifies that the version should be taken from the package.json
@@ -16,11 +16,11 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
-    "title": { "default": "HelloWorld" },
-    "description": { "default": "HelloWorld description" },
+    "title": { "default": "BdayAnniversary" },
+    "description": { "default": "BdayAnniversary description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "HelloWorld"
+      "description": "BdayAnniversary"
     }
   }]
 }
