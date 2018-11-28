@@ -61,7 +61,6 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
   private _getListData() {  
     return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + `/_api/web/Lists/GetByTitle('Staff Events')/Items?select=ID,Title,Body&$top%205`, SPHttpClient.configurations.v1)  
       .then((response) => {
-        console.log("this is response!!!", response.json());
         return response.json();
       });  
   }
