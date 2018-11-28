@@ -32,6 +32,14 @@ const variableName = 'hihihihihihih';
 export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayAnniversaryWebPartProps> {
    numberCount = [];
 
+  //  public render(): void {
+  //   this.domElement.innerHTML = `
+  //           <div id="spListContainer" /></div>
+  //           `
+  //     this._firstGetList();
+  //   // ReactDom.render(element, this.domElement);
+  // }
+
   public render(): void {
     const element: React.ReactElement<IBdayAnniversaryProps > = React.createElement(
       BdayAnniversary,
@@ -66,10 +74,10 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
   }
 
   private _renderList(items: PeopleList[]): void {
-    console.log('renderList'); 
+    console.log('renderList', items); 
     let html: string = ``;   
     items.forEach((item: PeopleList) => {
-      console.log('item', item);
+      // console.log('item', item);
       html += `  
            <h3>${item.Title}</h3>
             <p>${item.Body}</p>
