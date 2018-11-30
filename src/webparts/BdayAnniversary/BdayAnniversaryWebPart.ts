@@ -30,7 +30,7 @@ export interface PeopleList{
 const variableName = 'hihihihihihih';
 
 export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayAnniversaryWebPartProps> {
-   numberCount = [];
+  //  numberCount = [];
 
   //  public render(): void {
   //   this.domElement.innerHTML = `
@@ -59,21 +59,56 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
     return Version.parse('1.0');
   }
 
-  private _firstGetList() {
-    this._getListData().then((response) => {
-      console.log('check check check', response);
-      this._renderList(response.value)
-    })
+  private _firstGetList() {var today = new Date();
+    var startDay = today.getDate();
+    var startMonth = today.getMonth()+1;
+
+    var date = new Date(); date.setDate(date.getDate() + 7); 
+    var endDay = date.getDate();
+    var endMonth = date.getMonth()+1;
+    if(startMonth !== endMonth){
+      // fire off fucked up call
+      this._getListData(startDay, startMonth, endDay, endMonth).then((response) => {
+        console.log('check check check', response);
+        this._renderList(response.value)
+      })
+    } else {
+      this._get1month(startDay, startMonth, endDay)
+      .then((response) => {
+        console.log(response);
+        this._renderList(response.value)
+      });
+    }
   }
 
-  private _getListData() {  
-    return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + `/_api/web/Lists/GetByTitle('Staff Events')/Items?select=ID,Title,Body&$top%205`, SPHttpClient.configurations.v1)  
-      .then((response) => {
+  private _getListData(startDay, startMonth, endDay, endMonth) {  
+    console.log(startDay, startMonth, endDay, endMonth);
+    var firstMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay + 
+      ` and Birth_x0020_Month eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
+        .then((response) => {
+        return response.json();
+      });  
+    var secondMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day lt `+ endDay + 
+      ` and Birth_x0020_Month eq ` + endMonth + `'`, SPHttpClient.configurations.v1)
+        .then((response) => {
+        return response.json();
+      });
+      return firstMonth && secondMonth;
+  }
+
+  private _get1month(startDay, startMonth, endDay){
+    return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay +
+      `and Birth_x0020_Day lt` + endDay +
+      ` and Birth_x0020_Month eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
+        .then((response) => {
         return response.json();
       });  
   }
 
-  private _renderList(items: PeopleList[]): void {
+  private _renderList(items){
     console.log('renderList', items); 
     let html: string = ``;   
     items.forEach((item: PeopleList) => {
