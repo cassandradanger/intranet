@@ -67,7 +67,6 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
     var endDay = date.getDate();
     var endMonth = date.getMonth()+1;
     if(startMonth !== endMonth){
-      // fire off fucked up call
       this.get2months(startDay, startMonth, endDay, endMonth).then((response) => {
         console.log('check check check', response);
         this._renderList(response.value)
@@ -111,13 +110,13 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
 
   private get1month(startDay, startMonth, endDay){
     var bdayList = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay + `and Birth_x0020_Day lt` + endDay +
+      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay + ` and Birth_x0020_Day lt` + endDay +
       ` and Birth_x0020_Month eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
         .then((response) => {
         return response.json();
       });
     var anniversaryList = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay gt `+ startDay + `and AnniversaryDay lt` + endDay +
+      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay gt `+ startDay + ` and AnniversaryDay lt ` + endDay +
       ` and AnniversaryMonth eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
         .then((response) => {
         return response.json();
