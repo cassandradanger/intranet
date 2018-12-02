@@ -20,7 +20,8 @@
     "description": { "default": "BdayAnniversary description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "BdayAnniversary"
+      "description": "BdayAnniversary",
+      "name": "BdayAnniversary"
     }
   }]
 }

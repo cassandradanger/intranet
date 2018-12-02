@@ -1,3 +1,4 @@
+import { IDataProvider } from './../dataproviders/IDataProvider';
 export interface IBdayAnniversaryProps {
-  description: string;
+  provider:IDataProvider;
 }

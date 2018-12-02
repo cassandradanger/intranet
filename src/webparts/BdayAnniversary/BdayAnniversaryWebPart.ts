@@ -12,22 +12,24 @@ import {
 import * as strings from 'BdayAnniversaryWebPartStrings';
 import BdayAnniversary from './components/BdayAnniversary';
 import { IBdayAnniversaryProps } from './components/IBdayAnniversaryProps';
+import   MockupDataProvider  from './dataproviders/ApiDataProvider';
+
 
 export interface IBdayAnniversaryWebPartProps {
   description: string;
   SPListName: string;
 }
 
-export interface PeopleLists {
-  value: PeopleList[];  
-}
+// export interface PeopleLists {
+//   value: PeopleList[];  
+// }
 
-export interface PeopleList{
-  Title: string;
-  Body: string;
-}
+// export interface PeopleList{
+//   Title: string;
+//   Body: string;
+// }
 
-const variableName = 'hihihihihihih';
+// const variableName = 'hihihihihihih';
 
 export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayAnniversaryWebPartProps> {
   //  numberCount = [];
@@ -40,14 +42,29 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
   //   // ReactDom.render(element, this.domElement);
   // }
 
+  // public render(): void {
+  //   const element: React.ReactElement<IBdayAnniversaryProps > = React.createElement(
+  //     BdayAnniversary,
+  //     {
+  //       name: variableName,
+  //       position: variableName,
+  //       reason: variableName,
+  //       description: variableName,
+  //       anniversaryLength: variableName,
+  //     }
+  //   );
+  //     this._firstGetList();
+  //   ReactDom.render(element, this.domElement);
+  // }
+
   public render(): void {
     const element: React.ReactElement<IBdayAnniversaryProps > = React.createElement(
       BdayAnniversary,
       {
-        description: variableName,
+        provider: new MockupDataProvider(this.context.spHttpClient.get, this.context.pageContext.web.absoluteUrl, SPHttpClient.configurations.v1)
       }
     );
-      this._firstGetList();
+      console.log('checking', this.context.spHttpClient.get);
     ReactDom.render(element, this.domElement);
   }
 
@@ -59,84 +76,77 @@ export default class BdayAnniversaryWebPart extends BaseClientSideWebPart<IBdayA
     return Version.parse('1.0');
   }
 
-  private _firstGetList() {var today = new Date();
-    var startDay = today.getDate();
-    var startMonth = today.getMonth()+1;
+  // private _firstGetList() {var today = new Date();
+  //   var startDay = today.getDate();
+  //   var startMonth = today.getMonth()+1;
 
-    var date = new Date(); date.setDate(date.getDate() + 7); 
-    var endDay = date.getDate();
-    var endMonth = date.getMonth()+1;
-    if(startMonth !== endMonth){
-      this.get2months(startDay, startMonth, endDay, endMonth).then((response) => {
-        console.log('check check check', response);
-        this._renderList(response.value)
-      })
-    } else {
-      this.get1month(startDay, startMonth, endDay)
-      .then((response) => {
-        console.log(response);
-        this._renderList(response.value)
-      });
-    }
-  }
+  //   var date = new Date(); date.setDate(date.getDate() + 7); 
+  //   var endDay = date.getDate();
+  //   var endMonth = date.getMonth()+1;
+  //   if(startMonth !== endMonth){
+  //     this.get2months(startDay, startMonth, endDay, endMonth).then((response) => {
+  //       console.log('check check check', response);
+  //       this._renderList(response.value)
+  //     })
+  //   } else {
+  //     this.get1month(startDay, startMonth, endDay)
+  //     .then((response) => {
+  //       console.log(response);
+  //       this._renderList(response.value)
+  //     });
+  //   }
+  // }
 
-  private get2months(startDay, startMonth, endDay, endMonth) {
-    var bdayfirstMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-    `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay + 
-    ` and Birth_x0020_Month eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
-    .then((response) => {
-      return response.json();
-    });  
-    var bdaySecondMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-    `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day lt `+ endDay + 
-    ` and Birth_x0020_Month eq ` + endMonth + `'`, SPHttpClient.configurations.v1)
-    .then((response) => {
-      return response.json();
-    });
-    var annifirstMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay gt `+ startDay + 
-      ` and AnniversaryMonth eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
-      .then((response) => {
-        return response.json();
-      });  
-      var anniSecondMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay lt `+ endDay + 
-      ` and AnniversaryMonth eq ` + endMonth + `'`, SPHttpClient.configurations.v1)
-      .then((response) => {
-        return response.json();
-      });
-      return bdayfirstMonth && bdaySecondMonth && annifirstMonth && anniSecondMonth;
-  }
+  // private get2months(startDay, startMonth, endDay, endMonth) {
+  //   var bdayfirstMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+  //   `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay + 
+  //   ` and Birth_x0020_Month eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
+  //   .then((response) => {
+  //     return response.json();
+  //   });  
+  //   var bdaySecondMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+  //   `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day lt `+ endDay + 
+  //   ` and Birth_x0020_Month eq ` + endMonth + `'`, SPHttpClient.configurations.v1)
+  //   .then((response) => {
+  //     return response.json();
+  //   });
+  //   var annifirstMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+  //     `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay gt `+ startDay + 
+  //     ` and AnniversaryMonth eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
+  //     .then((response) => {
+  //       return response.json();
+  //     });  
+  //     var anniSecondMonth = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+  //     `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay lt `+ endDay + 
+  //     ` and AnniversaryMonth eq ` + endMonth + `'`, SPHttpClient.configurations.v1)
+  //     .then((response) => {
+  //       return response.json();
+  //     });
+  //     return bdayfirstMonth && bdaySecondMonth && annifirstMonth && anniSecondMonth;
+  // }
 
-  private get1month(startDay, startMonth, endDay){
-    var bdayList = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay + ` and Birth_x0020_Day lt` + endDay +
-      ` and Birth_x0020_Month eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
-        .then((response) => {
-        return response.json();
-      });
-    var anniversaryList = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
-      `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay gt `+ startDay + ` and AnniversaryDay lt ` + endDay +
-      ` and AnniversaryMonth eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
-        .then((response) => {
-        return response.json();
-      });  
-      return bdayList && anniversaryList;
-  }
+  // private get1month(startDay, startMonth, endDay){
+  //   var bdayList = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+  //     `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=Birth_x0020_Day gt `+ startDay + ` and Birth_x0020_Day lt` + endDay +
+  //     ` and Birth_x0020_Month eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
+  //       .then((response) => {
+  //       return response.json();
+  //     });
+  //   var anniversaryList = this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + 
+  //     `/_api/web/Lists/GetByTitle('Staff Events')/Items?$filter=AnniversaryDay gt `+ startDay + ` and AnniversaryDay lt ` + endDay +
+  //     ` and AnniversaryMonth eq ` + startMonth + `'`, SPHttpClient.configurations.v1)
+  //       .then((response) => {
+  //       return response.json();
+  //     });  
+  //     return bdayList && anniversaryList;
+  // }
 
-  private _renderList(items){
-    console.log('renderList', items); 
-    let html: string = ``;   
-    items.forEach((item: PeopleList) => {
-      // console.log('item', item);
-      html += `  
-           <h3>${item.Title}</h3>
-            <p>${item.Body}</p>
-          `;  
-    });  
-    const listContainer: Element = this.domElement.querySelector('#spListContainer');  
-    listContainer.innerHTML = html;  
-  } 
+  // private _renderList(items){
+  //   // console.log('renderList', items);
+  //   items.forEach((item) => {
+  //     console.log('person', item);
+  //   });
+  // } 
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
